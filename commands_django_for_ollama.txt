@@ -1,0 +1,8 @@
+#run django for ollama 
+
+
+
+PS C:\Users\vikas\OneDrive\Desktop\ogha\model> cd job_portal
+PS C:\Users\vikas\OneDrive\Desktop\ogha\model\job_portal> dir
+>> python manage.py runserver
+>> python manage.py startapp job\
