@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'job/css/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{% static 'images/img2.avif' %}") no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center; /* Horizontally center */
+            align-items: center; /* Vertically center */
+            background-color: #f5f5f5; /* Light grey background */
+        }
+
+        /* Navbar styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgb(221, 221, 221, 0.5); /* Slightly opaque white */
+            padding: 8px 20px; /* Smaller padding for navbar */
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        }
+
+        /* Center the heading within the navbar */
+        .navbar h1 {
+            color: #000;
+            font-size: 28px; /* Smaller font size for the heading */
+            text-align: center;
+            flex-grow: 1;
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+
+        .navbar .logo {
+            background-image: url("{% static 'images/logo.png' %}");
+            background-size: contain;
+            background-repeat: no-repeat;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            margin-left: auto;
+            margin-right: 20px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            z-index: 1;
+            border-radius: 5px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        /* Container styling (card) */
+        .container {
+            background-color:rgb(221, 221, 221, 0.95); /* Slightly opaque white for better contrast */
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* More prominent shadow for the card */
+            padding: 40px 20px;
+            width: 600px;
+            text-align: center;
+            margin-right: 100px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #000;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+            color: #000;
+        }
+
+        input[type="text"], input[type="password"] {
+        width: 100%; /* Full width */
+        padding: 12px; /* Same padding as the button */
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        box-sizing: border-box; /* Ensure padding is included in the width calculation */
+        }
+
+        button {
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        p {
+            margin: 10px 0;
+            color: #000;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+
+        /* Link styling */
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>RESUME CHECKER</h1> <!-- Centered Heading -->
+        <div class="dropdown">
+            <div class="logo"></div>
+            <div class="dropdown-content">
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container (Login Card) -->
+    <div class="container">
+        <h1>Login to the Job Portal</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit">Login</button>
+        </form>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+    </div>
+
+</body>
+</html>

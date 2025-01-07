@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Query</title>
+    <link rel="stylesheet" href="{% static 'job/css/styles.css' %}">
+    <style>
+        /* Add your custom styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{% static 'images/img2.avif' %}") no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f5f5f5;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgb(221, 221, 221, 0.9);
+            padding: 8px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar h1 {
+            color: #000;
+            font-size: 28px;
+            text-align: center;
+            flex-grow: 1;
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+
+        .navbar .logo {
+            background-image: url("{% static 'images/logo.png' %}");
+            background-size: contain;
+            background-repeat: no-repeat;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            margin-left: auto;
+            margin-right: 20px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            z-index: 1;
+            border-radius: 5px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        /* Container styling (card) */
+        .container {
+            background-color: rgb(221, 221, 221);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 600px;
+            text-align: center;
+            margin-right: 100px;
+            margin-top: 200px;
+        }
+
+        h1 {
+            color: #2a333c;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #ffffff;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #000000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .response-card {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f1f9ff;
+            border: 1px solid #007BFF;
+            border-radius: 8px;
+            color: #333;
+            font-size: 16px;
+            text-align: left;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #007BFF;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>RESUME CHECKER</h1>
+        <div class="dropdown">
+            <div class="logo"></div>
+            <div class="dropdown-content">
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'login' %}">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="container">
+        <h1>Submit Job Query</h1>
+        <form id="jobForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="prompt">Your Question:</label>
+            <input type="text" id="prompt" name="prompt" required>
+
+            <label for="job_desc_file">Job Description (PDF/Text):</label>
+            <input type="file" id="job_desc_file" name="job_desc_file">
+
+            <label for="resumes_files">Upload Resumes (PDF/Text):</label>
+            <input type="file" id="resumes_files" name="resumes_files" multiple>
+
+            <button type="submit">Submit Query</button>
+        </form>
+
+        <!-- Loading Spinner -->
+        <div class="spinner" id="loadingSpinner"></div>
+
+        {% if response %}
+            <div class="response-card">
+                <strong>Response:</strong>
+                <p>{{ response }}</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // JavaScript to handle form submission and show the spinner
+        document.getElementById('jobForm').addEventListener('submit', function() {
+            document.getElementById('loadingSpinner').style.display = 'block';
+        });
+    </script>
+
+</body>
+</html>
